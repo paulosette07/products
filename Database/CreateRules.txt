@@ -1,0 +1,67 @@
+CREATE table product_type(
+	id serial PRIMARY KEY,
+	name varchar(255) not null,
+	note text,
+	tax FLOAT not null,
+	insert_dt TIMESTAMP,
+	update_dt TIMESTAMP
+)
+
+CREATE table client (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255) not null,
+	cpf VARCHAR(45),
+	phone VARCHAR(45),
+	birthday DATE,
+	insert_dt TIMESTAMP,
+	update_dt TIMESTAMP
+)
+
+CREATE table product(
+	id serial PRIMARY KEY,
+	image VARCHAR(255),
+	name varchar(255) not null,
+	note text,
+	price DECIMAL(10,2) not null,
+	product_type_id INTEGER not null,
+	status INTEGER DEFAULT 1,
+	insert_dt TIMESTAMP,
+	update_dt TIMESTAMP,
+	FOREIGN KEY (product_type_id) REFERENCES product_type (id)
+)
+
+CREATE table sale(
+	id serial PRIMARY KEY,
+	date_time TIMESTAMP not null,
+	total_price DECIMAL(10,2) not null,
+	total_tax DECIMAL(10,2) not null,
+	total_discount DECIMAL(10,2) not null,
+	note text,
+	status INTEGER DEFAULT 1,
+	client_id INTEGER not null,
+	FOREIGN KEY (client_id) REFERENCES client (id)
+);
+
+CREATE table sale_product(
+	id serial PRIMARY KEY,
+	name varchar(255) not null,
+	amount INT not null,
+	price DECIMAL(10,2) not null,
+	tax DECIMAL(10,2) not null,
+	discount DECIMAL(10,2) not null,
+	note text,
+	product_id INTEGER not null,
+	sale_id INTEGER not null,
+	FOREIGN KEY (product_id) REFERENCES product (id),
+	FOREIGN KEY (sale_id) REFERENCES sale (id)
+)
+
+CREATE table sys_user (
+	id serial PRIMARY KEY,
+	name VARCHAR(255) not null,
+	email VARCHAR(255) not null,
+	password VARCHAR(64) not null,
+	status INTEGER DEFAULT 1,
+	insert_dt TIMESTAMP,
+	update_dt TIMESTAMP
+)
